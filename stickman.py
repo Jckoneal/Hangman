@@ -3,14 +3,16 @@ from wonderwords import RandomSentence
 import sys
 wrongGuesses = 0
 guesses = []
-
 def randomPhrase(): #Creates a Random Sentence using the Wonderwords library
     global phrase
+    global WorP
     WorP = input('Would you like to play with a word (hard) of phrase (easy): ')
     if WorP.lower().rstrip() == 'phrase' or WorP.lower().rstrip() == 'easy':
+        WorP = 'phrase'
         rs = RandomSentence()
         phrase = rs.sentence()
     elif WorP.lower().rstrip() == 'word' or WorP.lower().rstrip() == 'hard':
+        WorP = 'word'
         rs = RandomWord()
         phrase = rs.word()
     else:
@@ -49,11 +51,11 @@ def printSpaces(): #Prints the gameboard
 def inputLetter(): #takes the input and checs it is a single letter
     global guess
     guess = input("Guess a letter: ").lower()
-    if guess.isnumeric():
-        print("guess a letter not a number.")
+    if not guess.isalpha():
+        print("Guess a letter.")
         inputLetter()
     elif len(guess) != 1:
-        print('guess 1 letter at a time.')
+        print('Guess 1 letter at a time.')
         inputLetter()
     elif guess in guesses:
         print('You inputed a letter you have already guessed, try again.')
@@ -90,7 +92,7 @@ def printStickman(wrongGuesses): # Prints the stickman depending on how many gue
         print('\n'.join(stickmanParts[wrongGuesses]))
     else:
         print('\n'.join(stickmanParts[wrongGuesses]))
-        print('The word was:', phrase)
+        print('The', WorP, 'was:', phrase)
         print("you lost")
         sys.exit()
         
@@ -107,6 +109,9 @@ while not hasWon():
     printStickman(wrongGuesses)
     printSpaces()
     checkLetter()
+print('\n')
+printSpaces()
+print('You won!')
 print('\n')
 printSpaces()
 print('You won!')
